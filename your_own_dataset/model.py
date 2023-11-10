@@ -72,7 +72,7 @@ class Discriminator(nn.Module):
 
         # The height and width of downsampled image
         ds_size = opt.img_size // 2**4
-        self.adv_layer = nn.Sequential(nn.Linear(128 * ds_size**2, 1))
+        self.adv_layer = nn.Sequential(nn.Linear(256 * ds_size**2, 1))
 
     def forward(self, img):
         features = self.forward_features(img)
