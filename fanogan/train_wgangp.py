@@ -54,7 +54,6 @@ def train_wgangp(opt, generator, discriminator, dataloader, device, lambda_gp=10
 
     # Create directory to record tensorboard logs
     os.makedirs("logs/train_wgangp", exist_ok=True)
-
     writer = SummaryWriter(log_dir="logs/train_wgangp")
 
     padding_epoch = len(str(opt.n_epochs))
@@ -131,6 +130,7 @@ def train_wgangp(opt, generator, discriminator, dataloader, device, lambda_gp=10
 
                 batches_done += opt.n_critic
 
+        # Update tensorflow log
         writer.add_scalar("D loss", d_loss, epoch)
         writer.add_scalar("G loss", g_loss, epoch)
 

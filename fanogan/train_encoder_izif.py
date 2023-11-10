@@ -2,6 +2,7 @@ import os
 import torch
 import torch.nn as nn
 from torchvision.utils import save_image
+from torch.utils.tensorboard import SummaryWriter
 
 
 """
@@ -12,8 +13,9 @@ Licensed under MIT
 """
 
 
-def train_encoder_izif(opt, generator, discriminator, encoder,
-                       dataloader, device, kappa=1.0):
+def train_encoder_izif(
+    opt, generator, discriminator, encoder, dataloader, device, kappa=1.0
+):
     generator.load_state_dict(torch.load("results/generator"))
     discriminator.load_state_dict(torch.load("results/discriminator"))
 
@@ -23,18 +25,22 @@ def train_encoder_izif(opt, generator, discriminator, encoder,
 
     criterion = nn.MSELoss()
 
-    optimizer_E = torch.optim.Adam(encoder.parameters(),
-                                   lr=opt.lr, betas=(opt.b1, opt.b2))
+    optimizer_E = torch.optim.Adam(
+        encoder.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2)
+    )
 
     os.makedirs("results/images_e", exist_ok=True)
 
     padding_epoch = len(str(opt.n_epochs))
     padding_i = len(str(len(dataloader)))
 
+    # Create directory to record tensorboard logs
+    os.makedirs("logs/train_encoder_izif", exist_ok=True)
+    writer = SummaryWriter(log_dir="logs/train_encoder_izif")
+
     batches_done = 0
     for epoch in range(opt.n_epochs):
         for i, (imgs, _) in enumerate(dataloader):
-
             # Configure input
             real_imgs = imgs.to(device)
 
@@ -65,16 +71,27 @@ def train_encoder_izif(opt, generator, discriminator, encoder,
 
             # Output training log every n_critic steps
             if i % opt.n_critic == 0:
-                print(f"[Epoch {epoch:{padding_epoch}}/{opt.n_epochs}] "
-                      f"[Batch {i:{padding_i}}/{len(dataloader)}] "
-                      f"[E loss: {e_loss.item():3f}]")
+                print(
+                    f"[Epoch {epoch:{padding_epoch}}/{opt.n_epochs}] "
+                    f"[Batch {i:{padding_i}}/{len(dataloader)}] "
+                    f"[E loss: {e_loss.item():3f}]"
+                )
 
                 if batches_done % opt.sample_interval == 0:
                     fake_z = encoder(fake_imgs)
                     reconfiguration_imgs = generator(fake_z)
-                    save_image(reconfiguration_imgs.data[:25],
-                               f"results/images_e/{batches_done:06}.png",
-                               nrow=5, normalize=True)
+                    save_image(
+                        reconfiguration_imgs.data[:25],
+                        f"results/images_e/{batches_done:06}.png",
+                        nrow=5,
+                        normalize=True,
+                    )
 
                 batches_done += opt.n_critic
+
+            writer.add_scalar("D loss", d_loss, epoch)  # Update tensorboard log
+
+    writer.flush()  # ensure all pending events are written to disk
+    writer.close()
+
     torch.save(encoder.state_dict(), "results/encoder")
