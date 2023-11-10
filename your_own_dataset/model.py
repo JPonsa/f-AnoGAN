@@ -21,7 +21,7 @@ class Generator(nn.Module):
 
         self.conv_blocks = nn.Sequential(
             #
-            nn.BatchNorm2d(128),
+            nn.BatchNorm2d(256),
             nn.Upsample(scale_factor=2),
             nn.Conv2d(256, 256, 3, stride=1, padding=1),
             #
