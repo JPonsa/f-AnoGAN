@@ -6,8 +6,7 @@ from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 
-# Add ".." to import from parent dir
-from ..fanogan.test_anomaly_detection import test_anomaly_detection
+from fanogan.test_anomaly_detection import test_anomaly_detection
 
 
 def main(opt):

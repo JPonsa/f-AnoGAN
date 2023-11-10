@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 
-from ..fanogan.train_wgangp import train_wgangp  # Add ".." to import from parent dir
+from fanogan.train_wgangp import train_wgangp
 
 
 def main(opt):

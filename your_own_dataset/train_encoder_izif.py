@@ -6,8 +6,7 @@ from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 
-# Add ".." to import from parent dir
-from ..fanogan.train_encoder_izif import train_encoder_izif
+from fanogan.train_encoder_izif import train_encoder_izif
 
 
 def main(opt):
