@@ -33,7 +33,7 @@ def main(opt):
 
     sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-    from model import Generator, Discriminator
+    from .model import Generator, Discriminator  # import model from same dir
 
     generator = Generator(opt)
     discriminator = Discriminator(opt)

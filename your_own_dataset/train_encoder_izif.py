@@ -32,7 +32,7 @@ def main(opt):
     train_dataloader = DataLoader(dataset, batch_size=opt.batch_size, shuffle=True)
 
     sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-    from mvtec_ad.model import Generator, Discriminator, Encoder
+    from .model import Generator, Discriminator, Encoder  # import model from same dir
 
     generator = Generator(opt)
     discriminator = Discriminator(opt)
