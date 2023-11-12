@@ -40,6 +40,9 @@ def compute_gradient_penalty(D, real_samples, fake_samples, device):
 
 
 def train_wgangp(opt, generator, discriminator, dataloader, device, lambda_gp=10):
+    if opt.retrain:
+        generator.load_state_dict(torch.load("results/generator"))
+        discriminator.load_state_dict(torch.load("results/discriminator"))
     generator.to(device)
     discriminator.to(device)
 

@@ -100,6 +100,14 @@ if __name__ == "__main__":
         "--sample_interval", type=int, default=400, help="interval betwen image samples"
     )
     parser.add_argument("--seed", type=int, default=None, help="value of a random seed")
+
+    parser.add_argument(
+        "--retrain",
+        type=bool,
+        default=False,
+        help="Load pre-trained results/generator and results/discriminator and keep training",
+    )
+
     opt = parser.parse_args()
 
     main(opt)
