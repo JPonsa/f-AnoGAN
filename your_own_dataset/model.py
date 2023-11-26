@@ -24,11 +24,21 @@ class Generator(nn.Module):
             #
             nn.BatchNorm2d(128, 0.8),
             nn.LeakyReLU(0.2, inplace=True),
+            #
+            nn.Conv2d(128, 128, 3, stride=1, padding=1),  # Extra Conv layer
+            nn.BatchNorm2d(128, 0.8),  # Extra BatchNorm layer
+            nn.LeakyReLU(0.2, inplace=True),  # Extra LeakyReLU layer
+            #
             nn.Upsample(scale_factor=2),
             nn.Conv2d(128, 64, 3, stride=1, padding=1),
             #
             nn.BatchNorm2d(64, 0.8),
             nn.LeakyReLU(0.2, inplace=True),
+            #
+            nn.Conv2d(64, 64, 3, stride=1, padding=1),  # Extra Conv layer
+            nn.BatchNorm2d(64, 0.8),  # Extra BatchNorm layer
+            nn.LeakyReLU(0.2, inplace=True),  # Extra LeakyReLU layer
+            #
             nn.Conv2d(64, opt.channels, 3, stride=1, padding=1),
             nn.Tanh(),
         )
