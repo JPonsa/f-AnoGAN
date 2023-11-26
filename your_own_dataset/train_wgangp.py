@@ -41,6 +41,20 @@ def main(opt):
     train_wgangp(opt, generator, discriminator, train_dataloader, device)
 
 
+def str2bool(v: str) -> bool:
+    """
+    Takes a str and converts it to boolean
+    """
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ("yes", "true", "t", "y", "1"):
+        return True
+    elif v.lower() in ("no", "false", "f", "n", "0"):
+        return False
+    else:
+        raise argparse.ArgumentTypeError("Boolean value expected.")
+
+
 """
 The code below is:
 Copyright (c) 2018 Erik Linder-Norén
@@ -103,7 +117,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--retrain",
-        type=bool,
+        type=str2bool,
         default=False,
         help="Load pre-trained results/generator and results/discriminator and keep training",
     )
